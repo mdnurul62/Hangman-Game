@@ -1,0 +1,32 @@
+
+
+.targetDiv {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+
+.jumbotron {
+  color: black;
+  font-family: lucida Calligraphy;
+  text-shadow: #000 0px 0px 10px;
+  text-align: center;
+}
+
+.top-container {
+  color: tomato;
+  text-shadow: #000 0px 0px 20px;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+
+.bottom-container {
+  font-size: 26px;
+  color: black;
+  text-shadow: #000 0px 0px 20px;
+  text-align: center;
+  padding-top: 20px;
+}
+
