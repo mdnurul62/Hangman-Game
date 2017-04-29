@@ -5,13 +5,14 @@
         //4.If the guess is correct, the alphabet will replace the dash field.
         //5.If the guess is incorrect, the alphabet will display on another field.
              //5.1 Player should have 10 options to miss the guess.
-             //5.2 If the player guess incorrectly guess options will countdoun by 1.
+             //5.2 If the player guess incorrectly, guess options will countdoun by 1.
              //5.3 If the guess options countdown to 0, the game is over.
              //5.4 A meesage will display.
              //5.6 Player should have the option to play again.
-        //6.If all dash array field is filled by alphabet, Player wins the game.
-        //7.If the player wins the game, a meesage will display on the sceen.
-        //8. Player can play again.
+        //6. All guessed letters will display in one field.
+        //7.If all dash array field is filled by alphabet, Player wins the game.
+        //8.If the player wins the game, a meesage will display on the sceen.
+        //9. Player can play again.
         //End
 
 //Begin:
@@ -23,7 +24,7 @@ var hangman = {
   targetArray: [],   //Empty array for the secret word
   targetDiv: "",      //A '-' array to be displayed
 
-  wins: 0,           //Counter, if the player finds the word counter will be incremented by 1.
+  wins: 0,           //Counter, if the player finds the word, counter will be incremented by 1.
   guessesLeft: 10,   //Another counter for incorrect guess.
   guessLetter: "", //Empty array for incorrect guess.
   
@@ -36,7 +37,7 @@ var hangman = {
 //To pick a secret word from secret Word library array
   toGenSecretWord: function() {
     var randomNumber = Math.floor(Math.random() * (this.secretWord.length - 1));
-    hangman.guessWord = this.secretWord[randomNumber];
+    hangman.guessWord = hangman.secretWord[randomNumber];
   },
 
 //Picked secret word to be placed in the empty targetArray and to be splitted into letters srting
@@ -46,14 +47,14 @@ var hangman = {
 
 
 
-//To create p element with a class targetDiv where "-" string will display as same size of target array. 
+//To create an element with a class targetDiv where "-" string will display as same size of target array. 
   toGenGuessDiv: function() {
-    for (var i = 0; i < this.targetArray.length; i++) {
+    for (var i = 0; i < hangman.targetArray.length; i++) {
       if (hangman.targetArray[i] === "-") {
-          this.targetDiv += "<p class='targetDiv'>" + "-" + "</p>";
+          hangman.targetDiv += "<div class='targetDiv'>" + "-" + "</div>";
       }
       else {
-          this.targetDiv += "<p class='targetDiv'>" + "_" + "</p>";
+          this.targetDiv += "<div class='targetDiv'>" + "_" + "</div>";
       }
     }
   },
@@ -61,9 +62,9 @@ var hangman = {
 //To create new elements in  html page 
   toUpdateHTML: function() {
     var html =
-    "<p>Wins: " + hangman.wins + "</p>" +
-    "<p>Number of Guesses Remaining: " + hangman.guessesLeft + "</p>" +
-    "<p>Letters Already Guessed: " + hangman.guessLetter + "</p>";
+    "<div>Wins: " + hangman.wins + "</div>" +
+    "<div>Remaining Guess: " + hangman.guessesLeft + "</div>" +
+    "<div>Guessed Letters: " + hangman.guessLetter + "</div>" + "<div>Guess a word equal to the dashes below.";
     document.querySelector("#createPara").innerHTML = html;
   },
 
