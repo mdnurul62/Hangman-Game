@@ -25,7 +25,7 @@ var hangman = {
   targetDiv: "",      //A '-' array to be displayed
 
   wins: 0,           //Counter, if the player finds the word, counter will be incremented by 1.
-  guessesLeft: 7,   //Another counter for incorrect guess.
+  guessesLeft: 10,   //Another counter for incorrect guess.
   guessLetter: "", //Empty array for incorrect guess.
   
   
@@ -64,7 +64,7 @@ var hangman = {
     var html =
     "<div>Wins: " + hangman.wins + "</div>" +
     "<div>Remaining Guess: " + hangman.guessesLeft + "</div>" +
-    "<div>Guessed Letters: " + hangman.guessLetter + "</div>" + "<div>Guess a word equal to the dashes below.";
+    "<div>Guessed Letters: " + hangman.guessLetter + "</div>" + "<div>Guess a word equal to the dashes below.</div>";
     document.querySelector("#createPara").innerHTML = html;
   },
 
@@ -78,7 +78,7 @@ var hangman = {
     this.correctGuessCounter = 0;
     this.guessLetter = "";
     this.targetDiv = "";
-    this.guessesLeft = 7;
+    this.guessesLeft = 10;
     this.toGenSecretWord();  
     this.toGenTargetArray(); 
     this.toGenGuessDiv();    
@@ -101,64 +101,62 @@ hangman.toUpdateHTML();
 
 
 
-var music = new Audio("assets/music/bensound-anewbeginning.mp3");
-var userGuess;
 
-//Main process for User key actions
-
-document.onkeyup = function(event) {
+//var userGuess;
+//Main process for User key actions:
 //To set a counter and initiaizes with 0
 //If user misses a guess, counter will be incremented by 1.
-  var counter = 0; 
 //Determines key and convert into lower case
-  userGuess = String.fromCharCode(event.keyCode).toLowerCase(); 
 //Open source music
-  var newPara = document.getElementsByClassName("targetDiv");
-  
 //To allow the user to enter a guess letter once
 //No repetition
-  if (hangman.guessLetter.indexOf(userGuess) < 0) {
-    for (var i = 0; i < hangman.targetArray.length;  i++) {
-    //If the guess is correct,
-    //Play music
-    //correctGuessCounter will add by 1.
-    //If guess is incorrect, 
+//If the guess is correct,
+//Play music
+//correctGuessCounter will add by 1.
+//All guess letter will be counted
+//Guessed letter will be printed 
+//if the guess ic incorrect
+//If correct guess will match secret word, win counter add one and pop up alert message
+// Guesses left will countdown up to 0 and guessed letter will be counted.
+// When all guess becomes 0, alert pop up and reset game automatically
+var userGuess;
+document.onkeyup = function(event) {
+    var counter = 0;
+    userGuess = String.fromCharCode(event.keyCode).toLowerCase(); 
+    var newPara = document.getElementsByClassName("targetDiv");
+    var music = new Audio("assets/music/bensound-anewbeginning.mp3");
+
+    if (hangman.guessLetter.indexOf(userGuess) < 0) {
+      for (var i = 0; i < hangman.targetArray.length;  i++) {
       if (userGuess === hangman.targetArray[i]) {
         music.play();
         hangman.correctGuessCounter++;
-        //counter++;
-        //All guess letter will be counted
         hangman.guessLetter += userGuess;
-        //Guessed letter will be printed 
         newPara[i].innerHTML = userGuess; 
       } else {
         counter++;
       }
-        
-      
+     
 
-      //If correct guess will match secret word, win counter add one and pop up alert message
-        if (hangman.correctGuessCounter === hangman.targetArray.length ) {
-          hangman.wins++;
-          alert("Your won! Play again!!");
-          hangman.toResetHangman();
-        }
+    if (hangman.correctGuessCounter === hangman.targetArray.length ) {
+        hangman.wins++;
+        alert("Your won! Play again!!");
+        hangman.toResetHangman();
       }
     }
-
-
+  }
+      hangman.toUpdateHTML();
+      if (counter > 0 ) {
+        hangman.guessesLeft -= 1;
+      }
     hangman.toUpdateHTML();
-// Guesses left will countdown up to 0 and guessed letter will be counted.
-    if (counter > 0) {
-      hangman.guessesLeft -= 1;
-      //hangman.toUpdateHTML();
-    }
-    hangman.toUpdateHTML();
-
-// When all guess becomes 0, alert pop up and reset game automatically
+      
     if (hangman.guessesLeft === 0) {
-      alert("You lost, try again!");
-      hangman.toResetHangman();
-    }
-  };
+        alert("You lost, try again!");
+        hangman.toResetHangman();
+      }
+};
+  
+  
+
 
