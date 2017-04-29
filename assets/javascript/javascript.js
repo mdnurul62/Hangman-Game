@@ -135,6 +135,7 @@ document.onkeyup = function(event) {
         newPara[i].innerHTML = userGuess; 
       } else {
         counter++;
+        hangman.toUpdateHTML();
       }
      
 
