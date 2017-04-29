@@ -25,7 +25,7 @@ var hangman = {
   targetDiv: "",      //A '-' array to be displayed
 
   wins: 0,           //Counter, if the player finds the word, counter will be incremented by 1.
-  guessesLeft: 10,   //Another counter for incorrect guess.
+  guessesLeft: 7,   //Another counter for incorrect guess.
   guessLetter: "", //Empty array for incorrect guess.
   
   
@@ -78,7 +78,7 @@ var hangman = {
     this.correctGuessCounter = 0;
     this.guessLetter = "";
     this.targetDiv = "";
-    this.guessesLeft = 10;
+    this.guessesLeft = 7;
     this.toGenSecretWord();  
     this.toGenTargetArray(); 
     this.toGenGuessDiv();    
@@ -108,27 +108,37 @@ var userGuess;
 
 document.onkeyup = function(event) {
 //To set a counter and initiaizes with 0
-//It means that user's guess didn't match
+//If user misses a guess, counter will be incremented by 1.
   var counter = 0; 
 //Determines key and convert into lower case
   userGuess = String.fromCharCode(event.keyCode).toLowerCase(); 
+//Open source music
   var newPara = document.getElementsByClassName("targetDiv");
   
-//To allow the user to enter letter once
+//To allow the user to enter a guess letter once
+//No repetition
   if (hangman.guessLetter.indexOf(userGuess) < 0) {
     for (var i = 0; i < hangman.targetArray.length;  i++) {
     //If the guess is correct,
     //Play music
+    //correctGuessCounter will add by 1.
+    //If guess is incorrect, 
       if (userGuess === hangman.targetArray[i]) {
         music.play();
         hangman.correctGuessCounter++;
-        counter++;
+        //counter++;
         //All guess letter will be counted
         hangman.guessLetter += userGuess;
         //Guessed letter will be printed 
         newPara[i].innerHTML = userGuess; 
+      } else {
+        counter++;
+      }
+        
+      
+
       //If correct guess will match secret word, win counter add one and pop up alert message
-        if (hangman.correctGuessCounter === (hangman.targetArray.length )) {
+        if (hangman.correctGuessCounter === hangman.targetArray.length ) {
           hangman.wins++;
           alert("Your won! Play again!!");
           hangman.toResetHangman();
@@ -139,18 +149,16 @@ document.onkeyup = function(event) {
 
     hangman.toUpdateHTML();
 // Guesses left will countdown up to 0 and guessed letter will be counted.
-    if (counter === 0) {
-      hangman.guessesLeft = hangman.guessesLeft - 1;
-      hangman.guessLetter += userGuess;
-      hangman.toUpdateHTML();
+    if (counter > 0) {
+      hangman.guessesLeft -= 1;
+      //hangman.toUpdateHTML();
     }
-
-    counter = 0;
     hangman.toUpdateHTML();
-// When all guess becomes 0, alert pop and reset game automatically
+
+// When all guess becomes 0, alert pop up and reset game automatically
     if (hangman.guessesLeft === 0) {
       alert("You lost, try again!");
       hangman.toResetHangman();
     }
-  }
-};
+  };
+
