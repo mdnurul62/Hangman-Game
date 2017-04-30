@@ -25,7 +25,7 @@ var hangman = {
   targetDiv: "",      //A '-' array to be displayed
 
   wins: 0,           //Counter, if the player finds the word, counter will be incremented by 1.
-  guessesLeft: 10,   //Another counter for incorrect guess.
+  guessesLeft: 7,   //Another counter for incorrect guess.
   guessLetter: "", //Empty array for incorrect guess.
   
   
@@ -36,7 +36,7 @@ var hangman = {
 
 //To pick a secret word from secret Word library array
   toGenSecretWord: function() {
-    var randomNumber = Math.floor(Math.random() * (this.secretWord.length - 1));
+    var randomNumber = Math.floor(Math.random() * (hangman.secretWord.length - 1));
     hangman.guessWord = hangman.secretWord[randomNumber];
   },
 
@@ -75,14 +75,14 @@ var hangman = {
 //Refreshing target array
 // Initializes HTML again
   toResetHangman: function () {
-    this.correctGuessCounter = 0;
-    this.guessLetter = "";
-    this.targetDiv = "";
-    this.guessesLeft = 10;
-    this.toGenSecretWord();  
-    this.toGenTargetArray(); 
-    this.toGenGuessDiv();    
-    this.toUpdateHTML(); 
+    hangman.correctGuessCounter = 0;
+    hangman.guessLetter = "";
+    hangman.targetDiv = "";
+    hangman.guessesLeft = 7;
+    hangman.toGenSecretWord();  
+    hangman.toGenTargetArray(); 
+    hangman.toGenGuessDiv();    
+    hangman.toUpdateHTML(); 
 
     var newDiv = this.targetDiv;
     document.querySelector("#displayGuessed").innerHTML = newDiv;
@@ -109,7 +109,6 @@ hangman.toUpdateHTML();
 //Determines key and convert into lower case
 //Open source music
 //To allow the user to enter a guess letter once
-//No repetition
 //If the guess is correct,
 //Play music
 //correctGuessCounter will add by 1.
@@ -119,43 +118,42 @@ hangman.toUpdateHTML();
 //If correct guess will match secret word, win counter add one and pop up alert message
 // Guesses left will countdown up to 0 and guessed letter will be counted.
 // When all guess becomes 0, alert pop up and reset game automatically
+
 var userGuess;
 document.onkeyup = function(event) {
     var counter = 0;
-    userGuess = String.fromCharCode(event.keyCode).toLowerCase(); 
+    var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
     var newPara = document.getElementsByClassName("targetDiv");
     var music = new Audio("assets/music/bensound-anewbeginning.mp3");
 
-    if (hangman.guessLetter.indexOf(userGuess) < 0) {
-      for (var i = 0; i < hangman.targetArray.length;  i++) {
-      if (userGuess === hangman.targetArray[i]) {
-        music.play();
-        hangman.correctGuessCounter++;
-        hangman.guessLetter += userGuess;
-        newPara[i].innerHTML = userGuess; 
-      } else {
-        counter++;
-        hangman.toUpdateHTML();
-      }
-     
+  
+    for (var i = 0; i < hangman.targetArray.length;  i++) {
+          music.play();
+          if (userGuess === hangman.targetArray[i]) {
+            hangman.correctGuessCounter++;
+            hangman.guessLetter += userGuess;
+            newPara[i].innerHTML = userGuess;
+            counter++;
+          } 
 
-    if (hangman.correctGuessCounter === hangman.targetArray.length ) {
-        hangman.wins++;
-        alert("Your won! Play again!!");
-        hangman.toResetHangman();
-      }
+          if (hangman.correctGuessCounter === hangman.targetArray.length ) {
+            hangman.wins++;
+            alert("Your won! Play again!!");
+            hangman.toResetHangman();
+          }
     }
-  }
+    
+    
+    if (counter === 0 ) {
+      hangman.guessesLeft -= 1;
+      hangman.guessLetter += userGuess;
       hangman.toUpdateHTML();
-      if (counter > 0 ) {
-        hangman.guessesLeft -= 1;
-      }
-    hangman.toUpdateHTML();
+    } 
       
     if (hangman.guessesLeft === 0) {
-        alert("You lost, try again!");
-        hangman.toResetHangman();
-      }
+      alert("You lost, try again!");
+      hangman.toResetHangman();
+    }
 };
   
   
